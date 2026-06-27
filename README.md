@@ -61,7 +61,7 @@ Sistem ini dibekali dengan mesin kalkulasi keuangan otomatis berbasis data riil.
 php artisan migrate:fresh --seed
 ```
 
-*Catatan: Proses ini otomatis akan mengeksekusi `TransaksiKeuanganSeeder` untuk menyuntikkan data sampel keuangan dinamis sepanjang tahun buku 2026. Untuk username & password login menggunakan email:rt@rt.com dan passwword:rt-2026*
+*Catatan: Proses ini otomatis akan mengeksekusi `TransaksiKeuanganSeeder` untuk menyuntikkan data sampel keuangan dinamis sepanjang tahun buku 2026. Untuk username & password login menggunakan email : rt@rt.com dan passwword : rt-2026*
 
 ---
 
@@ -98,23 +98,3 @@ npm run dev
 Buka tautan frontend di browser Anda dan sistem siap diuji coba!
 
 ---
-
-## 💡 Fitur Utama yang Siap Diuji (Audit Trail Ready)
-
-1. **Dashboard Neraca Saldo Kas (Kriteria Poin 4):**
-   * Menampilkan akumulasi total masuk, keluar, dan sisa saldo kas RT secara real-time.
-   * **Custom Interactive Bar Chart:** Grafik komparasi performa keuangan 12 bulan penuh berbasis Tailwind CSS (*Zero Dependency*).
-   * Dropdown Filter Tahun dinamis otomatis mundur hingga 20 tahun ke belakang.
-
-2. **Laporan Audit Bulanan & Export Excel (Kriteria Poin 5):**
-   * Menu khusus penapisan laporan dengan filter independen Bulan dan Tahun.
-   * Terintegrasi penuh menggunakan Eloquent Scope `filterBulan()` & `filterTahun()`.
-   * **Tombol Export Excel:** Ekspor dokumen jurnal kas instan menggunakan teknologi *Native XML Blob Data*, aman dibongkar oleh Microsoft Excel atau Google Sheets tanpa memotong data (*Anti-Limit Pagination*).
-
-3. **Peta Denah Rumah Interaktif:**
-   * Grid denah otomatis berubah warna (**Hijau**: Terisi, **Abu-abu**: Kosong, **Badge Merah Berkedip**: Nunggak Iuran Bulanan).
-   * Logika keterisian `status_rumah` dihitung secara dinamis (*Time-aware Logic*) berdasarkan validitas tanggal keluar penghuni aktif pada database perantara `history_hunian`.
-   * Dilengkapi fitur bongkar-pasang warga via *Searchable Combobox Dropdown* dan proteksi ketat agar 1 warga tidak bisa menempati 2 rumah aktif sekaligus.
-
-4. **Manajemen Data Warga:**
-   * CRUD lengkap dengan sistem *Server-side Pagination* dan *Debounced Search* (500ms) untuk mengoptimalkan performa rendering data massal.
