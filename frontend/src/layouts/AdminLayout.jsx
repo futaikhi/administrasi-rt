@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import api from '../api/axios';
 import { 
@@ -24,6 +24,23 @@ export default function AdminLayout() {
         { name: 'Laporan Bulanan', path: '/laporan', icon: <FileSpreadsheet size={20} /> },
     ];
 
+    const [user , setUser] = useState({
+        name: 'Admin RT Elite', // Default/Fallback jika data lokal belum ada
+        email: 'admin@rtelite.id'
+    });
+
+    useEffect(() => {
+        // Ambil data user dari localStorage yang disimpan saat proses login sukses
+        const storedUser = localStorage.getItem('user_data');
+        if (storedUser) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (error) {
+                console.error("Gagal melakukan parsing data user lokal:", error);
+            }
+        }
+    }, []);
+
     const handleLogout = async () => {
         try {
             // Tembak API Logout Laravel untuk menghapus token di database
@@ -44,7 +61,7 @@ export default function AdminLayout() {
                 <div>
                     {/* Header Sidebar */}
                     <div className="p-6 border-b border-slate-800">
-                        <h1 className="text-xl font-bold text-emerald-400 tracking-tight">Kas RT Admin</h1>
+                        <h1 className="text-xl font-bold text-emerald-400 tracking-tight">Management RT Admin</h1>
                         <p className="text-xs text-slate-500 mt-0.5">Sistem Akuntansi Warga</p>
                     </div>
 
@@ -87,14 +104,11 @@ export default function AdminLayout() {
                 {/* Top Navbar */}
                 <header className="h-16 border-b border-slate-800 bg-slate-900/40 backdrop-blur-md px-8 flex items-center justify-between sticky top-0 z-0">
                     <div className="flex items-center gap-2">
-                        <span className="text-xs bg-emerald-500/10 text-emerald-400 px-2.5 py-1 rounded-full font-medium border border-emerald-500/20">
-                            Mode Produksi
-                        </span>
                     </div>
                     <div className="flex items-center gap-3">
                         <div className="text-right">
-                            <p className="text-sm font-medium text-slate-200">Pak RT (Admin)</p>
-                            <p className="text-xs text-slate-500">admin@rt.local</p>
+                            <p className="text-sm font-medium text-slate-200">{user.name}</p>
+                            <p className="text-xs text-slate-500">{user.email}</p>
                         </div>
                     </div>
                 </header>

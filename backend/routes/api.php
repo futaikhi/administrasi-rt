@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\LaporanController;
+use App\Http\Controllers\Api\MasterIuranController;
 use App\Http\Controllers\Api\PembayaranController;
 use App\Http\Controllers\Api\PengeluaranController;
 use App\Http\Controllers\Api\PenghuniController;
@@ -46,6 +47,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Transaksi Pembayaran Iuran
     Route::get('/pembayaran', [PembayaranController::class, 'index']);
     Route::post('/pembayaran', [PembayaranController::class, 'store']);
+
+    Route::get('/master-iuran', [MasterIuranController::class, 'index']);
 
     Route::get('/dashboard/summary-tahunan', [App\Http\Controllers\Api\DashboardController::class, 'getSummaryTahunan']);
 });

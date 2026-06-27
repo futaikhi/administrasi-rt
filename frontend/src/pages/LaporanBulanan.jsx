@@ -138,7 +138,7 @@ export default function LaporanBulanan() {
             {/* Header Form & Aksi Utama */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">Audit Laporan Bulanan</h2>
+                    <h2 className="text-2xl font-bold tracking-tight">Laporan Bulanan</h2>
                     <p className="text-sm text-slate-400 font-medium">Saring rincian berkas kas masuk dan operasional keluar, serta cetak dokumen laporan resmi.</p>
                 </div>
 

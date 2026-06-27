@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import pengeluaranService from '../services/pengeluaranService';
-import { WalletCards, PlusCircle, Edit3, Trash2, X, CalendarDays, DollarSign, Info, ArrowDownRight } from 'lucide-react';
+import { WalletCards, PlusCircle, Edit3, Trash2, X, CalendarDays, DollarSign, Info, ArrowDownRight, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Pengeluaran() {
     const [pengeluaranList, setPengeluaranList] = useState([]);
@@ -10,9 +10,9 @@ export default function Pengeluaran() {
     const [totalNominal, setTotalNominal] = useState(0); // State akumulasi pengeluaran dihalaman ini
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const [totalData, setTotalData] = useState(0);
 
     // State Kontrol CRUD Form
-    const [editingId, setEditingId] = useState(null);
     const [formData, setFormData] = useState({
         nama_pengeluaran: '', // Sesuai kolom seeder[cite: 1]
         nominal: '', // Sesuai kolom seeder[cite: 1]
@@ -30,6 +30,7 @@ export default function Pengeluaran() {
             // Hitung ringkasan total pengeluaran di list saat ini
             const total = (data.data || []).reduce((acc, curr) => acc + parseFloat(curr.nominal), 0); // Sesuai kolom seeder[cite: 1]
             setTotalNominal(total);
+            setTotalData(data.total || 0);
         } catch (err) {
             setError('Gagal memuat catatan jurnal pengeluaran kas.');
         } finally {
@@ -44,56 +45,16 @@ export default function Pengeluaran() {
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleEditClick = (item) => {
-        setError(''); setSuccess('');
-        setEditingId(item.id);
-        setFormData({
-            nama_pengeluaran: item.nama_pengeluaran, // Sesuai kolom seeder[cite: 1]
-            nominal: parseInt(item.nominal).toString(), // Sesuai kolom seeder[cite: 1]
-            tanggal_pengeluaran: item.tanggal_pengeluaran, // Sesuai kolom seeder[cite: 1]
-            keterangan: item.keterangan || '' // Sesuai kolom seeder[cite: 1]
-        });
-    };
-
-    const cancelEdit = () => {
-        setEditingId(null);
-        setFormData({
-            nama_pengeluaran: '', // Sesuai kolom seeder[cite: 1]
-            nominal: '', // Sesuai kolom seeder[cite: 1]
-            tanggal_pengeluaran: new Date().toISOString().split('T')[0], // Sesuai kolom seeder[cite: 1]
-            keterangan: '' // Sesuai kolom seeder[cite: 1]
-        });
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(''); setSuccess('');
 
         try {
-            if (editingId) {
-                await pengeluaranService.update(editingId, formData);
-                setSuccess('Catatan pengeluaran kas berhasil diperbarui!');
-            } else {
                 await pengeluaranService.create(formData);
                 setSuccess('Pengeluaran kas RT baru berhasil dibukukan!');
-            }
-            cancelEdit();
             fetchPengeluaran();
         } catch (err) {
             setError(err.response?.data?.message || 'Gagal menyimpan data pengeluaran.');
-        }
-    };
-
-    const handleDelete = async (id) => {
-        if (!confirm('Apakah Anda yakin ingin menghapus catatan transaksi pengeluaran ini dari buku besar?')) return;
-        setError(''); setSuccess('');
-        try {
-            await pengeluaranService.delete(id);
-            setSuccess('Catatan transaksi pengeluaran berhasil dihapus.');
-            cancelEdit();
-            fetchPengeluaran();
-        } catch (err) {
-            setError('Gagal menghapus log pengeluaran.');
         }
     };
 
@@ -134,7 +95,6 @@ export default function Pengeluaran() {
                                         <th className="px-5 py-3">Rincian Alokasi Dana</th>
                                         <th className="px-5 py-3">Tanggal Operasional</th>
                                         <th className="px-5 py-3 text-right">Nominal Anggaran</th>
-                                        <th className="px-5 py-3 text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-800/50">
@@ -158,12 +118,6 @@ export default function Pengeluaran() {
                                                 <td className="px-5 py-3 text-right font-bold text-rose-400">
                                                     Rp {parseInt(item.nominal).toLocaleString('id-ID')} {/* Sesuai kolom seeder[cite: 1] */}
                                                 </td>
-                                                <td className="px-5 py-3">
-                                                    <div className="flex items-center justify-center gap-2">
-                                                        <button onClick={() => handleEditClick(item)} className="p-1.5 rounded-md bg-slate-800 text-slate-400 hover:text-amber-400 transition-colors" title="Ubah Log"><Edit3 size={12}/></button>
-                                                        <button onClick={() => handleDelete(item.id)} className="p-1.5 rounded-md bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition-colors" title="Hapus Log"><Trash2 size={12}/></button>
-                                                    </div>
-                                                </td>
                                             </tr>
                                         ))
                                     )}
@@ -173,20 +127,21 @@ export default function Pengeluaran() {
                     </div>
 
                     {/* Pagination */}
-                    <div className="p-4 border-t border-slate-800 bg-slate-950/30 flex items-center justify-end gap-2">
-                        <button onClick={() => setPage(p => Math.max(p - 1, 1))} disabled={page === 1} className="px-3 py-1 text-[11px] font-semibold bg-slate-800 border border-slate-700 text-slate-300 rounded-lg disabled:opacity-30">Prev</button>
-                        <span className="text-[11px] text-slate-500">Halaman {page} dari {totalPages}</span>
-                        <button onClick={() => setPage(p => Math.min(p + 1, totalPages))} disabled={page === totalPages} className="px-3 py-1 text-[11px] font-semibold bg-slate-800 border border-slate-700 text-slate-300 rounded-lg disabled:opacity-30">Next</button>
+                    <div className="p-5 border-t border-slate-800 bg-slate-950/40 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div className="text-xs text-slate-500">Menampilkan <span className="text-slate-300">{pengeluaranList?.length || 0}</span> dari <span className="text-slate-300">{totalData}</span></div>
+                        <div className="flex items-center gap-2">
+                            <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1 || loading} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 disabled:opacity-30 transition-colors cursor-pointer"><ChevronLeft size={16} /></button>
+                            <span className="text-xs font-medium text-slate-400 px-3">Halaman <span className="text-white">{page}</span> dari <span className="text-white">{totalPages}</span></span>
+                            <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages || loading} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 disabled:opacity-30 transition-colors cursor-pointer"><ChevronRight size={16} /></button>
+                        </div>
                     </div>
                 </div>
 
                 {/* SEKTOR KANAN: Form Input Pencatatan Kas Keluar */}
                 <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 h-fit relative">
-                    {editingId && <button onClick={cancelEdit} className="absolute top-6 right-6 text-slate-500 hover:text-slate-300"><X size={18} /></button>}
-                    
-                    <div className={`flex items-center gap-2 mb-6 font-semibold ${editingId ? 'text-amber-400' : 'text-rose-400'}`}>
-                        {editingId ? <Edit3 size={18} /> : <PlusCircle size={18} />}
-                        <h3 className="text-sm uppercase tracking-wider">{editingId ? 'Ubah Log Anggaran' : 'Catat Dana Keluar'}</h3>
+                    <div className='flex items-center gap-2 mb-6 font-semibold text-rose-400'>
+                        <PlusCircle size={18} />
+                        <h3 className="text-sm uppercase tracking-wider">Catat Dana Keluar</h3>
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
@@ -210,8 +165,8 @@ export default function Pengeluaran() {
                             <textarea name="keterangan" rows="3" value={formData.keterangan} onChange={handleInputChange} className="w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-sm text-white focus:outline-none focus:border-rose-500 resize-none" placeholder="Tulis catatan detil bila diperlukan..."></textarea> {/* Sesuai kolom seeder[cite: 1] */}
                         </div>
 
-                        <button type="submit" className={`w-full text-xs font-bold uppercase tracking-wider py-2.5 rounded-lg text-slate-950 transition-colors ${editingId ? 'bg-amber-500 hover:bg-amber-400' : 'bg-rose-400 hover:bg-rose-300'}`}>
-                            {editingId ? 'Perbarui Catatan' : 'Bukukan Kas Keluar'}
+                        <button type="submit" className='w-full text-xs font-bold uppercase tracking-wider py-2.5 rounded-lg text-slate-950 transition-colors bg-rose-400 hover:bg-rose-300'>
+                            Bukukan Kas Keluar
                         </button>
                     </form>
                 </div>

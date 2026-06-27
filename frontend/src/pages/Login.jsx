@@ -18,6 +18,7 @@ export default function Login() {
 
             // Simpan token ke localStorage browser
             localStorage.setItem('rt_token', response.data.token);
+            localStorage.setItem('user_data', JSON.stringify(response.data.user));
 
             // Redirect manual/pindah ke halaman dashboard terproteksi
             window.location.href = '/dashboard';

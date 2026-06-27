@@ -14,7 +14,11 @@ const pembayaranService = {
             params: { bulan_iuran: bulan, tahun_iuran: tahun, all: true }
         });
         return response.data;
-    }
+    },
+    getMasterIuran: async () => {
+        const response = await api.get('/master-iuran'); // Mengarah ke endpoint master data iuran
+        return response.data;
+    },
 };
 
 export default pembayaranService;

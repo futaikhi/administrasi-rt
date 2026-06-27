@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PembayaranIuran;
 use App\Models\Rumah;
 use App\Models\Iuran; // Atau MasterIuran sesuai penamaan Anda
+use App\Models\MasterIuran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
@@ -42,7 +43,8 @@ class PembayaranController extends Controller
         ]);
 
         // Tentukan nominal default sesuai dokumen test
-        $nominalPerBulan = ($request->master_iuran_id == 1) ? 100000.00 : 15000.00;
+        $masterIuran = MasterIuran::findOrFail($request->master_iuran_id);
+        $nominalPerBulan = $masterIuran->nominal;
 
         DB::beginTransaction();
         try {

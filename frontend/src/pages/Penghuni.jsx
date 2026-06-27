@@ -230,9 +230,9 @@ export default function Penghuni() {
                     <div className="p-5 border-t border-slate-800 bg-slate-950/40 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="text-xs text-slate-500">Menampilkan <span className="text-slate-300">{wargaList?.length || 0}</span> dari <span className="text-slate-300">{totalData}</span> warga</div>
                         <div className="flex items-center gap-2">
-                            <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1 || loading} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 disabled:opacity-30 transition-colors"><ChevronLeft size={16} /></button>
+                            <button onClick={() => setPage(prev => Math.max(prev - 1, 1))} disabled={page === 1 || loading} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 disabled:opacity-30 transition-colors cursor-pointer"><ChevronLeft size={16} /></button>
                             <span className="text-xs font-medium text-slate-400 px-3">Halaman <span className="text-white">{page}</span> dari <span className="text-white">{totalPages}</span></span>
-                            <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages || loading} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 disabled:opacity-30 transition-colors"><ChevronRight size={16} /></button>
+                            <button onClick={() => setPage(prev => Math.min(prev + 1, totalPages))} disabled={page === totalPages || loading} className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:bg-slate-800 disabled:opacity-30 transition-colors cursor-pointer"><ChevronRight size={16} /></button>
                         </div>
                     </div>
                 </div>
