@@ -16,9 +16,9 @@ export default function AdminLayout() {
 
     // Daftar menu navigasi untuk Pak RT
     const menuItems = [
-        { name: 'Dashboard Finansial', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-        { name: 'Peta Hunian Rumah', path: '/rumah', icon: <Home size={20} /> },
-        { name: 'Manajemen Warga', path: '/penghuni', icon: <Users size={20} /> },
+        { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
+        { name: 'Rumah', path: '/rumah', icon: <Home size={20} /> },
+        { name: 'Penghuni', path: '/penghuni', icon: <Users size={20} /> },
         { name: 'Kas Masuk (Iuran)', path: '/pembayaran', icon: <Wallet size={20} /> },
         { name: 'Kas Keluar RT', path: '/pengeluaran', icon: <WalletCards size={20} /> },
         { name: 'Laporan Bulanan', path: '/laporan', icon: <FileSpreadsheet size={20} /> },
