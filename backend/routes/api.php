@@ -41,8 +41,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Master Pengeluaran
     Route::get('/pengeluaran', [PengeluaranController::class, 'index'])->name('pengeluaran.index');
     Route::post('/pengeluaran', [PengeluaranController::class, 'store'])->name('pengeluaran.store');
-    Route::put('/pengeluaran/{id}', [PengeluaranController::class, 'update'])->name('pengeluaran.update');
-    Route::delete('/pengeluaran/{id}', [PengeluaranController::class, 'destroy'])->name('pengeluaran.destroy');
 
     // Transaksi Pembayaran Iuran
     Route::get('/pembayaran', [PembayaranController::class, 'index']);
