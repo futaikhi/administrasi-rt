@@ -61,7 +61,7 @@ Sistem ini dibekali dengan mesin kalkulasi keuangan otomatis berbasis data riil.
 php artisan migrate:fresh --seed
 ```
 
-*Catatan: Proses ini otomatis akan mengeksekusi `TransaksiKeuanganSeeder` untuk menyuntikkan data sampel keuangan dinamis sepanjang tahun buku 2026.*
+*Catatan: Proses ini otomatis akan mengeksekusi `TransaksiKeuanganSeeder` untuk menyuntikkan data sampel keuangan dinamis sepanjang tahun buku 2026. Untuk username & password login menggunakan email:rt@rt.com dan passwword:rt-2026*
 
 ---
 
